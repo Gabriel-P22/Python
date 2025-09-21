@@ -1,11 +1,14 @@
 
 from models.restaurants import Restaurant
-from models.rating import Rating
+from models.menu.drink import Drink
+from models.menu.food import Food
 
 
 restaurant_praca = Restaurant("Praça", "Gourmet")
 restaurant_pizza = Restaurant("Pizza Speed", "Pizza")
-restaurant_pizza.add_rating(Rating("Customer_1", 1))
+
+drink = Drink("Suco de Uva", 10, "É muito bom")
+food = Food("Macarrão", 50, "É muito bom")
 
 for r in restaurant_pizza.get_rattings():
     print(r)
