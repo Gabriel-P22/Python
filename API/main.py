@@ -2,7 +2,7 @@ import requests
 
 url = "https://guilhermeonrails.github.io/api-restaurantes/restaurantes.json"
 
-response = requests.get(url);
+response = requests.get(url)
 print(response)
 res = response.json()
 
