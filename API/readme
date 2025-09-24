@@ -1,0 +1,10 @@
+Para criar uma venv, usamos:
+
+python3 -m venv venv
+
+Para iniciar o venv, usamos o:
+
+source venv/bin/activate
+
+para desativar o venv, usamos o:
+deactivate
