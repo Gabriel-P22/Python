@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from typing import List
 import models
@@ -18,7 +18,7 @@ def get_db():
         db.close()
 
 @app.post('/students/', response_model=schemas.StudentResponse)
-def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db())):
+def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db)):
     db_student = models.Student(**student.model_dump())
     db.add(db_student)
     db.commit()
@@ -26,6 +26,6 @@ def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db(
     return db_student
 
 @app.get("/students/", response_model=List[schemas.StudentResponse])
-def get_all(db: Session = Depends(get_db())):
+def get_all(db: Session = Depends(get_db)):
     students = db.query(models.Student).all()
     return students
