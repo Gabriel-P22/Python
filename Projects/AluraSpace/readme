@@ -1,0 +1,7 @@
+Como criar um projeto em DJANGO:
+
+django-admin startproject project_name .
+
+Por convemsão, usamos o nome do projeto como config/setup
+
+django-admin startproject setup .
