@@ -1,9 +1,12 @@
-from flask import Blueprint, jsonify, Response, request
+from flask import Blueprint, jsonify, Response, request, current_app
 from pydantic import ValidationError
 from WEB_APP.WEB_APP_WITH_FLASK.app import db
+from WEB_APP.WEB_APP_WITH_FLASK.app.decorators import token_required
 from bson import ObjectId
 from WEB_APP.WEB_APP_WITH_FLASK.app.models.user import LoginPayload
 from WEB_APP.WEB_APP_WITH_FLASK.app.models.products import Product, ProductDBModel
+from datetime import datetime, timedelta, timezone
+import jwt
 
 main__bp = Blueprint("main_bp", __name__)
 
@@ -26,16 +29,25 @@ def login():
         }), 500
 
     if user_data.username == "admin" and user_data.password == "123":
+        token = jwt.encode(
+            {
+            "user_id": user_data.username,
+            "exp": datetime.now(timezone.utc) + timedelta(minutes=30)
+            },
+            current_app.config["SECRET_KEY"],
+            algorithm='HS256'
+        )
         return jsonify({
-            "message": f"Realizar o Login do adm {user_data.model_dump_json()}"
-        })
+            "access_token": f"{token}"
+        }), 200
     else:
         return jsonify({
-            "message": f"Realizar o Login{user_data.model_dump_json()}"
-        })
+            "message": f"failed login"
+        }), 401
 
+@token_required
 @main__bp.route('/products', methods=["POST"])
-def create_products() -> Response:
+def create_products(token) -> Response:
     return jsonify({
         "message":
             "Create a product!"
